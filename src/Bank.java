@@ -23,6 +23,17 @@ public class Bank {
     private ArrayList<Account> accounts;
 
     /**
+     * Create a new Bank object with empty lists of users and accounts
+     * @param name  the name of the bank
+     */
+
+    public Bank(String name) {
+        this.name = name;
+        this.users = new ArrayList<>();
+        this.accounts = new ArrayList<Account>();
+    }
+
+    /**
      * Generate a new universally unique ID for a user.
      * @return the UUID.
      */
@@ -68,6 +79,11 @@ public class Bank {
 
     }
 
+    /**
+     * Generate a new universally unique ID for an account.
+     * @return the UUID.
+     */
+
     public String getNewAccountUUID() {
 
         // inits
@@ -78,7 +94,7 @@ public class Bank {
         int len = 6;
         boolean nonUnique;
 
-        //continue looping until we get an unique ID
+        //continue looping until we get a unique ID
 
         do {
 
@@ -123,8 +139,12 @@ public class Bank {
 
     public User addUser(String firstName, String lastName, String pin) throws NoSuchAlgorithmException {
 
+        // create a new User object and add it to our list
+
         User newUser = new User(firstName, lastName, pin, this);
         this.users.add(newUser);
+
+        // create a savings account for the user
 
         Account newAccount = new Account("Savings", newUser, this);
         newUser.addAccount(newAccount);
@@ -134,4 +154,23 @@ public class Bank {
 
     }
 
+    public User userLogin(String userID, String pin) throws NoSuchAlgorithmException {
+
+        // search through list of users
+        for(User u : this.users) {
+
+            //check user ID is correct
+            if (u.getUuid().compareTo(userID) == 0 && u.validatePin(pin)) {
+
+                return u;
+            }
+        }
+
+        //if we haven't found the user or have an incorrect pin
+        return null;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 }
