@@ -124,6 +124,9 @@ public class ATM {
                 break;
 
             case 5:
+                // gobble up rest of previous input
+                sc.nextLine();
+                break;
 
         }
 
